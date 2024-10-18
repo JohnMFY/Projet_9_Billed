@@ -19,8 +19,11 @@ const row = (bill) => {
     `)
   }
 
-const rows = (data) => {
-  return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
+const rows = (data) => {                                        //****** DEBUG ******//                  
+  data.sort(function(a,b){                                     //** Sort by dates **//
+    return new Date(b.date) - new Date(a.date);               //*******************//            
+  });
+  return (data && data.length) ? data.map(bill => row(bill)).join("") : ""      
 }
 
 export default ({ data: bills, loading, error }) => {
@@ -78,12 +81,3 @@ export default ({ data: bills, loading, error }) => {
     </div>`
   )
 }
-
-/*
-test("Then bills should be ordered from earliest to latest", () => {
-  document.body.innerHTML = BillsUI({ data: bills })
-  const dates = screen.getAllByText(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i).map(a => a.innerHTML)
-  const antiChrono = (a, b) => ((a < b) ? 1 : -1)
-  const datesSorted = [...dates].sort(antiChrono)
-  expect(dates).toEqual(datesSorted)
-})*/

@@ -74,3 +74,15 @@ export default class NewBill {
     }
   }
 }
+/*
+function checkExtension(){
+  let imageName = nomDeLImageUpload;
+  let extension = imageName.split('.').pop();
+  console.log('Extension:', extension);
+  if(extension === jpg){
+    doIt
+  }else{
+    return error
+  }
+}
+*/
