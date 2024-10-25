@@ -22,9 +22,14 @@ export default class NewBill {
     const fileName = filePath[filePath.length-1]
     const formData = new FormData()
     const email = JSON.parse(localStorage.getItem("user")).email
-    formData.append('file', file)
+    if(checkExtension(file.name) === true){
+      formData.append('file', file)
+    }else{
+      return error
+    }
+    
     formData.append('email', email)
-
+   
     this.store
       .bills()
       .create({
@@ -74,15 +79,15 @@ export default class NewBill {
     }
   }
 }
-/*
-function checkExtension(){
-  let imageName = nomDeLImageUpload;
-  let extension = imageName.split('.').pop();
+
+function checkExtension(image){
+  let extension = image.split('.').pop();
   console.log('Extension:', extension);
-  if(extension === jpg){
-    doIt
+  if(extension === 'jpg'){
+    return true
   }else{
-    return error
+    console.log('You didnt say the magic word')
+    return false
+    
   }
 }
-*/
