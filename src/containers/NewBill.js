@@ -22,12 +22,12 @@ export default class NewBill {
     const fileName = filePath[filePath.length-1]
     const formData = new FormData()
     const email = JSON.parse(localStorage.getItem("user")).email
-    if(checkExtension(file.name) === true){
-      formData.append('file', file)
-    }else{
+    if(checkExtension(file.name) === true){                               /************* DEBUG *************/
+      formData.append('file', file)                                      /** condition on extension type **/
+    }else{                                                              /*********************************/
       return error
     }
-    
+
     formData.append('email', email)
    
     this.store
@@ -80,10 +80,10 @@ export default class NewBill {
   }
 }
 
-function checkExtension(image){
-  let extension = image.split('.').pop();
-  console.log('Extension:', extension);
-  if(extension === 'jpg'){
+function checkExtension(image){                     /*********** DEBUG *************/        
+  let extension = image.split('.').pop();          /***function to check if the ***/
+  console.log('Extension:', extension);           /*** extension is a .jpg     ***/
+  if(extension === 'jpg'){                       /*******************************/
     return true
   }else{
     console.log('You didnt say the magic word')
