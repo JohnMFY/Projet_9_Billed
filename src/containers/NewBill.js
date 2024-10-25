@@ -25,7 +25,8 @@ export default class NewBill {
     if(checkExtension(file.name) === true){                               /************* DEBUG *************/
       formData.append('file', file)                                      /** condition on extension type **/
     }else{                                                              /*********************************/
-      return error
+      alert('Upload .jpg files')
+      return                                                              
     }
 
     formData.append('email', email)
