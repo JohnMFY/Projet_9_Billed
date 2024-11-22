@@ -13,6 +13,9 @@ describe("Given I am connected as an employee", () => {
       const html = NewBillUI()
       document.body.innerHTML = html
       //to-do write assertion
+      //Test each required input with the alerte for image
+      //Test the submition of the form
+      //Test if we go back on bills page
     })
   })
 })
