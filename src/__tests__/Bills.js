@@ -60,7 +60,7 @@ test("handleClickNewBill redirect to correct route", () => {
       type: "Admin",
     })
   );
-  const bills = new Bills({
+  const bills = new bills({
     document,
     localStorage: localStorageMock,
     store: null,
@@ -71,7 +71,7 @@ test("handleClickNewBill redirect to correct route", () => {
 
   expect(onNavigate).toHaveBeenCalledWith(ROUTES_PATH["NewBill"]);
 });
-/*
+
   test("getBills function without store", () => {
     const onNavigate = jest.fn();
 
@@ -82,7 +82,7 @@ test("handleClickNewBill redirect to correct route", () => {
         type: "Admin",
       })
     );
-    const bills = new Bills({
+    const bills = new bills({
       document,
       localStorage: localStorageMock,
       store: null,
@@ -93,4 +93,3 @@ test("handleClickNewBill redirect to correct route", () => {
 
     expect(result).toBe(undefined);
   });
-*/
