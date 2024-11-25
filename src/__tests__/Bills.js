@@ -26,7 +26,7 @@ describe("Given I am connected as an employee", () => {
       await waitFor(() => screen.getByTestId('icon-window'))
       const windowIcon = screen.getByTestId('icon-window')
       //to-do write expect expression
-
+      expect(windowIcon).toBeTruthy()
     })
     test("Then bills should be ordered from earliest to latest", () => {
       document.body.innerHTML = BillsUI({ data: bills })
@@ -36,4 +36,61 @@ describe("Given I am connected as an employee", () => {
       expect(dates).toEqual(datesSorted)
     })
   })
+
+  /******* TEST CLICK button *******/
+  describe('When I am on bills page, I have a button new bill and bills with a eye icon', () => {
+    test('I click on the new bill button', () => {
+      //Test that we take the good path to "newBill"
+    })
+    test('I click on the eye icon of one of the bill', () => {
+      //test that when i click the "eyeIcon" the modalFile with all the element appears
+    })
+  })
+  /***************************************/
 })
+
+
+test("handleClickNewBill redirect to correct route", () => {
+  const onNavigate = jest.fn();
+
+  Object.defineProperty(window, "localStorage", { value: localStorageMock });
+  window.localStorage.setItem(
+    "user",
+    JSON.stringify({
+      type: "Admin",
+    })
+  );
+  const bills = new Bills({
+    document,
+    localStorage: localStorageMock,
+    store: null,
+    onNavigate,
+  });
+
+  bills.handleClickNewBill();
+
+  expect(onNavigate).toHaveBeenCalledWith(ROUTES_PATH["NewBill"]);
+});
+/*
+  test("getBills function without store", () => {
+    const onNavigate = jest.fn();
+
+    Object.defineProperty(window, "localStorage", { value: localStorageMock });
+    window.localStorage.setItem(
+      "user",
+      JSON.stringify({
+        type: "Admin",
+      })
+    );
+    const bills = new Bills({
+      document,
+      localStorage: localStorageMock,
+      store: null,
+      onNavigate,
+    });
+
+    const result = bills.getBills();
+
+    expect(result).toBe(undefined);
+  });
+*/
