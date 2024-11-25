@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import {screen, waitFor} from "@testing-library/dom"
+import {fireEvent, screen, waitFor} from "@testing-library/dom"
 import BillsUI from "../views/BillsUI.js"
 import Bills from "../containers/Bills.js"
 import { bills } from "../fixtures/bills.js"
@@ -10,6 +10,7 @@ import { ROUTES_PATH} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
 
 import router from "../app/Router.js";
+import userEvent from "@testing-library/user-event";
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
@@ -43,8 +44,11 @@ describe("Given I am connected as an employee", () => {
     test('I click on the new bill button', () => {
       //Test that we take the good path to "newBill"
     })
-    test('I click on the eye icon of one of the bill', () => {
-      //test that when i click the "eyeIcon" the modalFile with all the element appears
+    test('click on the eye icon, check if handleClickIconEye = OK', () => {
+      const eyeIcon = screen.getByTestId("icon-eye");
+      const handleClickIconEye = jest.fn((e) => bills.handleClickIconEye(e, bills[0]));
+      fireEvent.click(eyeIcon[0]);
+      expect(handleClickIconEye).toHaveBeenCalled();      
     })
   })
   /***************************************/
