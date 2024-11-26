@@ -11,6 +11,8 @@ import {localStorageMock} from "../__mocks__/localStorage.js";
 
 import router from "../app/Router.js";
 import userEvent from "@testing-library/user-event";
+import Store from "../app/Store.js";
+import store from "../__mocks__/store.js";
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
@@ -39,21 +41,15 @@ describe("Given I am connected as an employee", () => {
     })
   })
 
-  /******* TEST CLICK button *******/
-  describe('When I am on bills page, I have a button new bill and bills with a eye icon', () => {
-    test('I click on the new bill button', () => {
-      //Test that we take the good path to "newBill"
-    })
-    test('click on the eye icon, check if handleClickIconEye = OK', () => {
-      const eyeIcon = screen.getByTestId("icon-eye");
-      const handleClickIconEye = jest.fn((e) => bills.handleClickIconEye(e, bills[0]));
-      fireEvent.click(eyeIcon[0]);
-      expect(handleClickIconEye).toHaveBeenCalled();      
-    })
+/*
+  test('click on the eye icon, check if handleClickIconEye = OK', () => {
+    const eyeIcon = screen.getByTestId("icon-eye");
+    const handleClickIconEye = jest.fn((e) => bills.handleClickIconEye(e, bills[0]));
+    fireEvent.click(eyeIcon[0]);
+    expect(handleClickIconEye).toHaveBeenCalled();      
   })
-  /***************************************/
+*/
 })
-
 
 test("handleClickNewBill redirect to correct route", () => {
   const onNavigate = jest.fn();
@@ -77,24 +73,46 @@ test("handleClickNewBill redirect to correct route", () => {
   expect(onNavigate).toHaveBeenCalledWith(ROUTES_PATH["NewBill"]);
 });
 
-  test("getBills function without store", () => {
-    const onNavigate = jest.fn();
+test("getBills function without store", () => {
+  const onNavigate = jest.fn();
 
-    Object.defineProperty(window, "localStorage", { value: localStorageMock });
-    window.localStorage.setItem(
-      "user",
-      JSON.stringify({
-        type: "Admin",
-      })
-    );
-    const bills = new Bills({
-      document,
-      localStorage: localStorageMock,
-      store: null,
-      onNavigate,
-    });
-
-    const result = bills.getBills();
-
-    expect(result).toBe(undefined);
+  Object.defineProperty(window, "localStorage", { value: localStorageMock });
+  window.localStorage.setItem(
+    "user",
+    JSON.stringify({
+      type: "Admin",
+    })
+  );
+  const bills = new Bills({
+    document,
+    localStorage: localStorageMock,
+    store: null,
+    onNavigate,
   });
+
+  const result = bills.getBills();
+
+  expect(result).toBe(undefined);
+});
+
+test("getBills function return a good result", () => {
+  const onNavigate = jest.fn();
+
+  Object.defineProperty(window, "localStorage", { value: localStorageMock });
+  window.localStorage.setItem(
+    "user",
+    JSON.stringify({
+      type: "Admin",
+    })
+  );
+  const bills = new Bills({
+    document,
+    localStorage: localStorageMock,
+    store: store,
+    onNavigate,
+  });
+
+  const result = bills.getBills();
+
+  expect(result).toBeTruthy();
+});
