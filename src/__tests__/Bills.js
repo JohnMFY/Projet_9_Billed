@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import {fireEvent, screen, waitFor} from "@testing-library/dom"
+import {fireEvent, getByTestId, screen, waitFor} from "@testing-library/dom"
 import BillsUI from "../views/BillsUI.js"
 import Bills from "../containers/Bills.js"
 import { bills } from "../fixtures/bills.js"
@@ -40,16 +40,30 @@ describe("Given I am connected as an employee", () => {
       expect(dates).toEqual(datesSorted)
     })
   })
-
 /*
   test('click on the eye icon, check if handleClickIconEye = OK', () => {
-    const eyeIcon = screen.getByTestId("icon-eye");
-    const handleClickIconEye = jest.fn((e) => bills.handleClickIconEye(e, bills[0]));
-    fireEvent.click(eyeIcon[0]);
-    expect(handleClickIconEye).toHaveBeenCalled();      
-  })
-*/
+    const onNavigate = jest.fn();
+
+    Object.defineProperty(window, "localStorage", { value: localStorageMock });
+    window.localStorage.setItem(
+      "user",
+      JSON.stringify({
+        type: "Admin",
+      })
+    );
+    const bills = new Bills({
+      document,
+      localStorage: localStorageMock,
+      store: store,
+      onNavigate,
+    });
+    const icon = screen.getAllByTestId("icon-eye")[0]
+    bills.handleClickIconEye(icon);
+    const modal = screen.getByText("Justificatif");
+    expect(modal).toBeTruthy()     
+  })*/
 })
+
 
 test("handleClickNewBill redirect to correct route", () => {
   const onNavigate = jest.fn();
@@ -95,7 +109,7 @@ test("getBills function without store", () => {
   expect(result).toBe(undefined);
 });
 
-test("getBills function return a good result", () => {
+test("getBills function return a good result", async () => {
   const onNavigate = jest.fn();
 
   Object.defineProperty(window, "localStorage", { value: localStorageMock });
@@ -112,7 +126,8 @@ test("getBills function return a good result", () => {
     onNavigate,
   });
 
-  const result = bills.getBills();
-
+  const result = await bills.getBills();
+  console.log(result)
+  expect(result.length).toBe(4)
   expect(result).toBeTruthy();
 });
