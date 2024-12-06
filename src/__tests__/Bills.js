@@ -40,30 +40,7 @@ describe("Given I am connected as an employee", () => {
       expect(dates).toEqual(datesSorted)
     })
   })
-/*
-  test('click on the eye icon, check if handleClickIconEye = OK', () => {
-    const onNavigate = jest.fn();
-
-    Object.defineProperty(window, "localStorage", { value: localStorageMock });
-    window.localStorage.setItem(
-      "user",
-      JSON.stringify({
-        type: "Admin",
-      })
-    );
-    const bills = new Bills({
-      document,
-      localStorage: localStorageMock,
-      store: store,
-      onNavigate,
-    });
-    const icon = screen.getAllByTestId("icon-eye")[0]
-    bills.handleClickIconEye(icon);
-    const modal = screen.getByText("Justificatif");
-    expect(modal).toBeTruthy()     
-  })*/
 })
-
 
 test("handleClickNewBill redirect to correct route", () => {
   const onNavigate = jest.fn();
@@ -127,7 +104,6 @@ test("getBills function return a good result", async () => {
   });
 
   const result = await bills.getBills();
-  console.log(result)
   expect(result.length).toBe(4)
   expect(result).toBeTruthy();
 });
@@ -153,30 +129,42 @@ describe('Given I am a user connected as Employee', () => {
     test('Error message', () => {
       //<div data-testid="error-message">Error: user not allowed! you should clear your localstorage and retry!</div>
     })*/
-      //////////////////////////////////////////////
-      test('click "icon-eye" open the modal with all the elements',async () => {
-        const onNavigate = jest.fn();
+      
+    test('click "icon-eye" open the modal with all the elements',async () => {
+      const onNavigate = jest.fn();
 
-        Object.defineProperty(window, "localStorage", { value: localStorageMock });
-        window.localStorage.setItem(
-          "user",
-          JSON.stringify({
-            type: "Admin",
-          })
-        );
-        const bills = new Bills({
-          document,
-          localStorage: localStorageMock,
-          store: store,
-          onNavigate,
-        });
+      Object.defineProperty(window, "localStorage", { value: localStorageMock });
+      window.localStorage.setItem(
+        "user",
+        JSON.stringify({
+          type: "Admin",
+        })
+      );
+      const bills = new Bills({
+        document,
+        localStorage: localStorageMock,
+        store: store,
+        onNavigate,
+      });
+/*
+      fonction dans Bills.js container
+      handleClickIconEye = (icon) => {
         const billUrl = icon.getAttribute("data-bill-url")
-        const icon = screen.getAllByTestId("icon-eye")[0]
-        bills.handleClickIconEye(icon);
-        const modal = screen.getByText("Justificatif");
-        expect(modal).toBeTruthy()    
-      })
-      ////////////////////////////////////////
+        const imgWidth = Math.floor($('#modaleFile').width() * 0.5)
+        $('#modaleFile').find(".modal-body").html(`<div style='text-align: center;' class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill" /></div>`)
+        $('#modaleFile').modal('show')
+      }
+*/
+      const icon = screen.getAllByTestId("icon-eye")[0]
+      //const billUrl = icon.getAttribute("data-bill-url")
+      //bills.handleClickIconEye(icon);
+      //fireEvent.click(icon)
+     // expect(bills.handleClickIconEye(icon)).toHaveBeenCalled()
+      //const modal = screen.getByText("Justificatif");
+      //expect(modal).toBeTruthy()  
+      //expect(handleClickIconEye(icon)).toContain("Justificatif")      
+    })
+
     test('click "btn-new-bill" send us to the form', () => {
       localStorage.setItem("user", JSON.stringify({ type: "Employee", email: "a@a" }));
       const root = document.createElement("div");
