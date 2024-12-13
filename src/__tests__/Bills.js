@@ -113,6 +113,7 @@ test("getBills function return a good result", async () => {
 /****************************************************/
 describe('Given I am a user connected as Employee', () => {
   describe('When I am on the bills page', () => {
+
     test('Fetches the test bills and have all elements', async () => {
       localStorage.setItem("user", JSON.stringify({ type: "Employee", email: "a@a" }));
       const root = document.createElement("div")
@@ -125,11 +126,8 @@ describe('Given I am a user connected as Employee', () => {
       expect(await waitFor(() => screen.getAllByTestId("icon-eye"))).toBeTruthy();
       expect(await waitFor(() => screen.getByTestId("btn-new-bill"))).toBeTruthy();
 
-    })/*
-    test('Error message', () => {
-      //<div data-testid="error-message">Error: user not allowed! you should clear your localstorage and retry!</div>
-    })*/
-      
+    })
+ 
     test('click "icon-eye" open the modal with all the elements',async () => {
       const onNavigate = jest.fn();
 
@@ -146,23 +144,28 @@ describe('Given I am a user connected as Employee', () => {
         store: store,
         onNavigate,
       });
-/*
-      fonction dans Bills.js container
-      handleClickIconEye = (icon) => {
-        const billUrl = icon.getAttribute("data-bill-url")
-        const imgWidth = Math.floor($('#modaleFile').width() * 0.5)
-        $('#modaleFile').find(".modal-body").html(`<div style='text-align: center;' class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill" /></div>`)
-        $('#modaleFile').modal('show')
-      }
-*/
       const icon = screen.getAllByTestId("icon-eye")[0]
-      //const billUrl = icon.getAttribute("data-bill-url")
-      //bills.handleClickIconEye(icon);
-      //fireEvent.click(icon)
-     // expect(bills.handleClickIconEye(icon)).toHaveBeenCalled()
-      //const modal = screen.getByText("Justificatif");
-      //expect(modal).toBeTruthy()  
-      //expect(handleClickIconEye(icon)).toContain("Justificatif")      
+      const modale = document.getElementById("modaleFile");
+      $.fn.modal = jest.fn(() => modale.classList.add("show"));
+      icon.addEventListener('click', bills.handleClickIconEye(icon))
+      fireEvent.click(icon)
+      const modalTitle = screen.getByText("Justificatif");
+      expect(modalTitle).toBeTruthy()    
+    })
+
+    test("all the bills appears", async () => {
+      localStorage.setItem("user", JSON.stringify({ type: "Employee", email: "a@a" }));
+      const root = document.createElement("div")
+      root.setAttribute("id", "root")
+      document.body.append(root)
+      router()
+      window.onNavigate(ROUTES_PATH.Bills)
+
+      const billsTable = screen.getByTestId("tbody");
+      expect(billsTable).toBeTruthy();
+      
+      const allBills = screen.getAllByRole("row");  
+      expect(allBills).toHaveLength(5);
     })
 
     test('click "btn-new-bill" send us to the form', () => {
@@ -186,5 +189,4 @@ describe('Given I am a user connected as Employee', () => {
 
     })
   })
-
 })
