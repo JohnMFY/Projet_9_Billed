@@ -108,7 +108,7 @@ test("getBills function return a good result", async () => {
   expect(result).toBeTruthy();
 });
 
- /****************************************************/
+  /****************************************************/
  /*               TEST D'INTEGRATION                 */
 /****************************************************/
 describe('Given I am a user connected as Employee', () => {
@@ -135,7 +135,7 @@ describe('Given I am a user connected as Employee', () => {
       window.localStorage.setItem(
         "user",
         JSON.stringify({
-          type: "Admin",
+          type: "Employee",
         })
       );
       const bills = new Bills({
