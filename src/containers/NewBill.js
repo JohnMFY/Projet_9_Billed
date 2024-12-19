@@ -79,11 +79,13 @@ export default class NewBill {
       .catch(error => console.error(error))
     }
   }
-  
-  checkExtension = (image)  => {                     /*********** DEBUG *************/        
-    let extension = image.split('.').pop();          /***function to check if the ***/
-    console.log('Extension:', extension);           /*** extension is a .jpg     ***/
-    if(extension === 'jpg'){                       /*******************************/
+       /*********** DEBUG *************/ 
+     /***function to check if the ***/
+    /*** extension is a .jpg     ***/
+  /*******************************/
+  checkExtension = (image)  => {                             
+    let extension = image.split('.').pop();                                                    
+    if(extension === 'jpg'){                       
       return true
     }else{
       console.log('You didnt say the magic word')
