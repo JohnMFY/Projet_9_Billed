@@ -91,13 +91,13 @@ describe("Given I am connected as an employee", () => {
         store: store,
         onNavigate,
       });
-      const image = "preview-facture-free-201801-pdf-1.png"
-      expect(newBill.checkExtension(image)).toBe(false)
+      const image = "preview-facture-free-201801-pdf-1.png";
+      expect(newBill.checkExtension(image)).toBe(false);
     })
 
     //Test the submition of the form
     
-    test("test handleSubmit", () => {
+    test("test handleSubmit OK", async () => {
       const html = NewBillUI()
       document.body.innerHTML = html
       const onNavigate = jest.fn();
@@ -120,6 +120,51 @@ describe("Given I am connected as an employee", () => {
       const file = screen.getByTestId('file');             //mendatory
       const date = new Date();
 
+      //Form value//
+      fireEvent.change(expenseType, { target: { value: 'Transports' } });
+      fireEvent.change(expenseName, { target: { value: 'Name' } });
+      fireEvent.change(datepicker, { target: { value: date } });
+      fireEvent.change(amount, { target: { value: 50 } });
+      fireEvent.change(vat, { target: { value: 10 } });
+      fireEvent.change(pct, { target: { value: 21 } });
+      fireEvent.change(commentary, { target: { value: 'commentary' } });
+      fireEvent.change(file, { target: {files: [new File(['test'], 'test.jpg', {type: 'image/jpg'})],},}); 
+
+      const handleSubmit = jest.fn((e) => newBill.handleSubmit(e))
+      const form = document.querySelector(`form[data-testid="form-new-bill"]`);//récupérer form
+      form.addEventListener('submit', handleSubmit) //submit event sur le form
+      fireEvent.submit(form)
+      expect(handleSubmit).toBeCalled()
+      jest.spyOn(window, 'alert').mockImplementation(() => {})     
+      expect(window.alert).toHaveBeenCalledTimes(0);
+    })
+
+    test("test handleSubmit KO", async () => {
+      const html = NewBillUI()
+      document.body.innerHTML = html
+      const onNavigate = jest.fn();
+      Object.defineProperty(window, "localStorage", { value: localStorageMock });
+      const newBill = new NewBill({
+        document,
+        localStorage: localStorageMock,
+        store: store,
+        onNavigate,
+      });
+
+      jest.spyOn(window, 'alert').mockImplementation(() => {})  
+
+      //Form element//
+      const expenseType = screen.getByTestId('expense-type');     //mendatory
+      const expenseName = screen.getByTestId('expense-name');
+      const datepicker = screen.getByTestId('datepicker');      //mendatory
+      const amount = screen.getByTestId('amount');             //mendatory
+      const vat = screen.getByTestId('vat');
+      const pct = screen.getByTestId('pct');                 //mendatory
+      const commentary = screen.getByTestId('commentary');
+      const file = screen.getByTestId('file');             //mendatory
+      const date = new Date();
+
+      //Form value//
       fireEvent.change(expenseType, { target: { value: 'Transport' } });
       fireEvent.change(expenseName, { target: { value: 'Name' } });
       fireEvent.change(datepicker, { target: { value: date } });
@@ -127,14 +172,19 @@ describe("Given I am connected as an employee", () => {
       fireEvent.change(vat, { target: { value: 10 } });
       fireEvent.change(pct, { target: { value: 20 } });
       fireEvent.change(commentary, { target: { value: 'commentary' } });
-      fireEvent.change(file, { target: {files: [new File(['test'], 'test.jpg', {type: 'image/jpg'})],},}); 
-         
+      fireEvent.change(file, { target: {files: [new File(['test'], 'test.png', {type: 'image/png'})],},}); 
+
+      const handleSubmit = jest.fn((e) => newBill.handleSubmit(e))
+      const submitBtn = document.getElementById("btn-send-bill");
+      submitBtn.addEventListener('click', handleSubmit)
+      userEvent.click(submitBtn)
+      expect(handleSubmit).toHaveBeenCalledTimes(0)   
+      expect(window.alert).toHaveBeenCalledTimes(1);
     })
 
-
     //Test if we go back on bills page
-/*
     test("test take the good root after handleSubmit() sucess", () => {
+      
       const html = NewBillUI()
       document.body.innerHTML = html
       const onNavigate = jest.fn();
@@ -151,10 +201,17 @@ describe("Given I am connected as an employee", () => {
         store: store,
         onNavigate,
       });
-      const response = store.update(newBill);
-      newBill.handleSubmit(response)
+
+      const handleSubmit = jest.fn((e) => newBill.handleSubmit(e))
+      const submitBtn = document.getElementById("btn-send-bill");
+      submitBtn.addEventListener('click', handleSubmit)
+      userEvent.click(submitBtn)
+      expect(handleSubmit).toHaveBeenCalledTimes(1)
       expect(onNavigate).toHaveBeenCalledWith(ROUTES_PATH['Bills']);
+      
     })
-*/
+
   })
 })
+
+//test handlesubmit
