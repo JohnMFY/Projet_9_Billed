@@ -127,8 +127,11 @@ describe("Given I am connected as an employee", () => {
       fireEvent.change(vat, { target: { value: 10 } });
       fireEvent.change(pct, { target: { value: 20 } });
       fireEvent.change(commentary, { target: { value: 'commentary' } });
-      fireEvent.change(file, { target: {fileUrl: 'https://localhost:3456/images/test.jpg', key: '1234'} });    
+      fireEvent.change(file, { target: {files: [new File(['test'], 'test.jpg', {type: 'image/jpg'})],},}); 
+         
     })
+
+
     //Test if we go back on bills page
 /*
     test("test take the good root after handleSubmit() sucess", () => {
