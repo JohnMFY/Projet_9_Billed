@@ -94,9 +94,32 @@ describe("Given I am connected as an employee", () => {
       const image = "preview-facture-free-201801-pdf-1.png";
       expect(newBill.checkExtension(image)).toBe(false);
     })
+    test("Test handleChangeFile OK", async () => {
+      const html = NewBillUI()
+      document.body.innerHTML = html
+      const onNavigate = jest.fn();
+      Object.defineProperty(window, "localStorage", { value: localStorageMock });
+      window.localStorage.setItem(
+        "user",
+        JSON.stringify({
+          type: "Employee",
+        })
+      );
+      const newBill = new NewBill({
+        document,
+        localStorage: localStorageMock,
+        store: store,
+        onNavigate,
+      });
+      const handleChangeFile = jest.fn((e) => newBill.handleChangeFile(e));
+      const expenseNameInput = screen.getByTestId("expense-name");
+      expenseNameInput.addEventListener("change", handleChangeFile);
+      fireEvent.change(expenseNameInput, { target: { value: 'TEST' } });
+      expect(handleChangeFile).toHaveBeenCalled()
+      expect(expenseNameInput.value).toBe('TEST')
+    })
 
-    //Test the submition of the form
-    
+    //Test the submition of the form    
     test("test handleSubmit OK", async () => {
       const html = NewBillUI()
       document.body.innerHTML = html
@@ -108,7 +131,6 @@ describe("Given I am connected as an employee", () => {
         store: store,
         onNavigate,
       });
-
       //Form element//
       const expenseType = screen.getByTestId('expense-type');     //mendatory
       const expenseName = screen.getByTestId('expense-name');
@@ -174,11 +196,12 @@ describe("Given I am connected as an employee", () => {
       fireEvent.change(commentary, { target: { value: 'commentary' } });
       fireEvent.change(file, { target: {files: [new File(['test'], 'test.png', {type: 'image/png'})],},}); 
 
-      const handleSubmit = jest.fn((e) => newBill.handleSubmit(e))
+      const handleSubmit = jest.fn((e) => newBill.handleSubmit(e));
+      const form = document.querySelector(`form[data-testid="form-new-bill"]`);    //récupérer form
+      form.addEventListener('submit', handleSubmit);                              //submit event sur le form
       const submitBtn = document.getElementById("btn-send-bill");
-      submitBtn.addEventListener('click', handleSubmit)
-      userEvent.click(submitBtn)
-      expect(handleSubmit).toHaveBeenCalledTimes(0)   
+      fireEvent.submit(form);
+      expect(handleSubmit).toHaveBeenCalled();  
       expect(window.alert).toHaveBeenCalledTimes(1);
     })
 
@@ -203,9 +226,9 @@ describe("Given I am connected as an employee", () => {
       });
 
       const handleSubmit = jest.fn((e) => newBill.handleSubmit(e))
-      const submitBtn = document.getElementById("btn-send-bill");
-      submitBtn.addEventListener('click', handleSubmit)
-      userEvent.click(submitBtn)
+      const form = document.querySelector(`form[data-testid="form-new-bill"]`); 
+      form.addEventListener('submit', handleSubmit)                               
+      fireEvent.submit(form)
       expect(handleSubmit).toHaveBeenCalledTimes(1)
       expect(onNavigate).toHaveBeenCalledWith(ROUTES_PATH['Bills']);
       
@@ -213,5 +236,3 @@ describe("Given I am connected as an employee", () => {
 
   })
 })
-
-//test handlesubmit
