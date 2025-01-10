@@ -94,6 +94,7 @@ describe("Given I am connected as an employee", () => {
       const image = "preview-facture-free-201801-pdf-1.png";
       expect(newBill.checkExtension(image)).toBe(false);
     })
+
     test("Test handleChangeFile OK", async () => {
       const html = NewBillUI()
       document.body.innerHTML = html
@@ -197,9 +198,8 @@ describe("Given I am connected as an employee", () => {
       fireEvent.change(file, { target: {files: [new File(['test'], 'test.png', {type: 'image/png'})],},}); 
 
       const handleSubmit = jest.fn((e) => newBill.handleSubmit(e));
-      const form = document.querySelector(`form[data-testid="form-new-bill"]`);    //récupérer form
-      form.addEventListener('submit', handleSubmit);                              //submit event sur le form
-      const submitBtn = document.getElementById("btn-send-bill");
+      const form = document.querySelector(`form[data-testid="form-new-bill"]`);    
+      form.addEventListener('submit', handleSubmit);                              
       fireEvent.submit(form);
       expect(handleSubmit).toHaveBeenCalled();  
       expect(window.alert).toHaveBeenCalledTimes(1);
