@@ -181,7 +181,7 @@ describe("Given I am connected as an employee", () => {
     })
 
     //Test if we go back on bills page
-    test("test take the good root after handleSubmit() sucess", () => {
+    test("test take the good rout after handleSubmit() sucess", () => {
       
       const html = NewBillUI()
       document.body.innerHTML = html
