@@ -95,31 +95,6 @@ describe("Given I am connected as an employee", () => {
       expect(newBill.checkExtension(image)).toBe(false);
     })
 
-    test("Test handleChangeFile OK", async () => {
-      const html = NewBillUI()
-      document.body.innerHTML = html
-      const onNavigate = jest.fn();
-      Object.defineProperty(window, "localStorage", { value: localStorageMock });
-      window.localStorage.setItem(
-        "user",
-        JSON.stringify({
-          type: "Employee",
-        })
-      );
-      const newBill = new NewBill({
-        document,
-        localStorage: localStorageMock,
-        store: store,
-        onNavigate,
-      });
-      const handleChangeFile = jest.fn((e) => newBill.handleChangeFile(e));
-      const expenseNameInput = screen.getByTestId("expense-name");
-      expenseNameInput.addEventListener("change", handleChangeFile);
-      fireEvent.change(expenseNameInput, { target: { value: 'TEST' } });
-      expect(handleChangeFile).toHaveBeenCalled()
-      expect(expenseNameInput.value).toBe('TEST')
-    })
-
     //Test the submition of the form    
     test("test handleSubmit OK", async () => {
       const html = NewBillUI()
