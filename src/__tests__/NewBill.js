@@ -91,7 +91,7 @@ describe("Given I am connected as an employee", () => {
         store: store,
         onNavigate,
       });
-      const image = "preview-facture-free-201801-pdf-1.png";
+      const image = "preview-facture-free-201801-pdf-1.svg";
       expect(newBill.checkExtension(image)).toBe(false);
     })
 
@@ -170,7 +170,7 @@ describe("Given I am connected as an employee", () => {
       fireEvent.change(vat, { target: { value: 10 } });
       fireEvent.change(pct, { target: { value: 20 } });
       fireEvent.change(commentary, { target: { value: 'commentary' } });
-      fireEvent.change(file, { target: {files: [new File(['test'], 'test.png', {type: 'image/png'})],},}); 
+      fireEvent.change(file, { target: {files: [new File(['test'], 'test.svg', {type: 'image/svg'})],},}); 
 
       const handleSubmit = jest.fn((e) => newBill.handleSubmit(e));
       const form = document.querySelector(`form[data-testid="form-new-bill"]`);    

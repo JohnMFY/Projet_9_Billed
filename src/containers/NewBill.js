@@ -85,7 +85,7 @@ export default class NewBill {
   /*******************************/
   checkExtension = (image)  => {                             
     let extension = image.split('.').pop();                                                    
-    if(extension === 'jpg'){                       
+    if(extension === 'jpg' || extension === 'jpeg' || extension === 'png'){                       
       return true
     }else{
       console.log('You didnt say the magic word')
