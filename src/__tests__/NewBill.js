@@ -74,7 +74,7 @@ describe("Given I am connected as an employee", () => {
       expect(newBill.checkExtension(image)).toBeTruthy()
     })
 
-    test("We have the alert when we put the wrong image format", async () => {
+    test("The function return false with th wrong image format", async () => {
       const html = NewBillUI()
       document.body.innerHTML = html
       const onNavigate = jest.fn();

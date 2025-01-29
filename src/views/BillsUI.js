@@ -22,7 +22,7 @@ const row = (bill) => {
 const rows = (data) => {  
   if(!data){
     return []
-  }                                     //****** DEBUG ******//                  
+  }                                                             //****** DEBUG ******//                  
   data.sort(function(a,b){                                     //** Sort by dates **//
     return new Date(b.date) - new Date(a.date);               //*******************//            
   });

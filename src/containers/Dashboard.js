@@ -144,7 +144,7 @@ export default class {
         .html("")
       this.counter ++
     }
-
+    /*  Mise en place d'un système de classe pour gérer l'ouverture */
     bills.forEach(bill => { 
       if(!$(`#open-bill${bill.id}`).hasClass('active')){
         $(`#open-bill${bill.id}`).addClass('active')
