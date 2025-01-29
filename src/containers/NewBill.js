@@ -25,7 +25,7 @@ export default class NewBill {
     if(this.checkExtension(file.name) === true){                               /************* DEBUG *************/
       formData.append('file', file)                                           /** condition on extension type **/
     }else{                                                                   /*********************************/
-      alert('Upload .jpg files')
+      alert('Upload .jpg, .jpeg or .png files')
       return                                                              
     }
 
