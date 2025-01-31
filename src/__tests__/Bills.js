@@ -3,17 +3,16 @@
  */
 
 import {fireEvent, getByTestId, screen, waitFor} from "@testing-library/dom"
+import mockStore from "../__mocks__/store.js";
 import BillsUI from "../views/BillsUI.js"
 import Bills from "../containers/Bills.js"
 import { bills } from "../fixtures/bills.js"
 import { ROUTES_PATH} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
-
 import router from "../app/Router.js";
-import userEvent from "@testing-library/user-event";
-import Store from "../app/Store.js";
-import store from "../__mocks__/store.js";
 
+
+jest.mock("../app/store", () => mockStore)
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
@@ -100,7 +99,7 @@ test("getBills function return a good result", async () => {
   const bills = new Bills({
     document,
     localStorage: localStorageMock,
-    store: store,
+    store: mockStore,
     onNavigate,
   });
 
@@ -125,7 +124,7 @@ describe('Given I am a user connected as Employee', () => {
       expect(await waitFor(() => screen.getAllByText("Billed"))).toBeTruthy();
       expect(await waitFor(() => screen.getAllByTestId("icon-window"))).toBeTruthy();
       expect(await waitFor(() => screen.getAllByTestId("icon-eye"))).toBeTruthy();
-      expect(await waitFor(() => screen.getByTestId("btn-new-bill"))).toBeTruthy();
+      expect(await waitFor(() => screen.getAllByTestId("btn-new-bill"))).toBeTruthy();
 
     })
  
@@ -142,7 +141,7 @@ describe('Given I am a user connected as Employee', () => {
       const bills = new Bills({
         document,
         localStorage: localStorageMock,
-        store: store,
+        store: mockStore,
         onNavigate,
       });
       const icon = screen.getAllByTestId("icon-eye")[0]
@@ -150,7 +149,7 @@ describe('Given I am a user connected as Employee', () => {
       $.fn.modal = jest.fn(() => modale.classList.add("show"));
       icon.addEventListener('click', bills.handleClickIconEye(icon))
       fireEvent.click(icon)
-      const modalTitle = screen.getByText("Justificatif");
+      const modalTitle = screen.getAllByText("Justificatif");
       expect(modalTitle).toBeTruthy()    
     })
 
@@ -193,7 +192,7 @@ describe('Given I am a user connected as Employee', () => {
 
   describe("Erreur API", () => {
     beforeEach(() => {
-      jest.spyOn(store, "bills")
+      jest.spyOn(mockStore, "bills")
       Object.defineProperty(
           window,
           'localStorage',
@@ -210,7 +209,7 @@ describe('Given I am a user connected as Employee', () => {
     })
     test("fetches bills from an API and fails with 404 message error", async () => {
 
-      store.bills.mockImplementationOnce(() => {
+      mockStore.bills.mockImplementationOnce(() => {
         return {
           list : () =>  {
             return Promise.reject(new Error("Erreur 404"))
@@ -224,7 +223,7 @@ describe('Given I am a user connected as Employee', () => {
 
     test("fetches messages from an API and fails with 500 message error", async () => {
 
-      store.bills.mockImplementationOnce(() => {
+      mockStore.bills.mockImplementationOnce(() => {
         return {
           list : () =>  {
             return Promise.reject(new Error("Erreur 500"))
